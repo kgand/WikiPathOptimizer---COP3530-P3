@@ -9,4 +9,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories(include)
 
 # add executable
-add_executable(WikiPath src/main.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp src/DataLoader.cpp src/ArticleMapper.cpp src/UI.cpp)
+add_executable(WikiPath 
+    src/main.cpp 
+    src/Graph.cpp 
+    src/BFS.cpp 
+    src/DFS.cpp 
+    src/DataLoader.cpp 
+    src/ArticleMapper.cpp 
+    src/UI.cpp
+)
