@@ -1,17 +1,14 @@
 #ifndef DATALOADER_H
 #define DATALOADER_H
-using namespace std;
 
 #include "Graph.h"
+#include "ArticleMapper.h"
 #include <string>
-#include <fstream>
-#include <sstream>
 
-// DataLoader class to load dataset from file into Graph
 class DataLoader {
 public:
-    // Function to load data and populate the graph
-    bool loadData(const string &filePath, Graph &graph);
+    // Function to load dataset from file and populate the graph using ArticleMapper
+    bool loadData(const std::string &filePath, Graph &graph, const ArticleMapper &mapper);
 };
 
 #endif // DATALOADER_H 
