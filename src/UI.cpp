@@ -47,7 +47,7 @@ void UI::displayMetrics(const string &algorithm, const vector<int> &path,
     } else {
         cout << "No path found";
     }
-    cout << "Path length: " << metrics.pathLength << endl;
+    cout << "\nPath length: " << metrics.pathLength << endl;
     cout << "Nodes visited: " << metrics.nodesVisited << endl;
     cout << "Execution time: " << fixed << setprecision(3) 
          << metrics.executionTime << "ms" << endl;
