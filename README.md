@@ -31,7 +31,6 @@ We seek to determine whether BFS or DFS has a better performance when using a da
 ## Strategy
 - Represent data using a graph.
 - Implement BFS and DFS algorithms for pathfinding.
-- Compare algorithm performance based on various metrics.
 
 ## Distribution of Responsibility
 - **Data Analysis:** Kovidh Gandreti
@@ -49,7 +48,7 @@ We seek to determine whether BFS or DFS has a better performance when using a da
 
 ### Prerequisites
 - C++ compiler (supporting C++11)
-- CMake
+- g++
 
 ### Steps
 
@@ -59,53 +58,25 @@ We seek to determine whether BFS or DFS has a better performance when using a da
    cd WikiPath
    ```
 
-2. **Create a build directory:**
+2. **Ensure the data files are in place:**
+   - `data/articles.tsv`: Contains article names (one per line).
+   - `data/links.tsv`: Contains links in the format `source\target`.
+
+3. **Compile the main program:**
    ```bash
-   mkdir build
-   cd build
+   g++ src/main.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp src/DataLoader.cpp src/ArticleMapper.cpp src/UI.cpp -Iinclude -o WikiPath
    ```
 
-3. **Run CMake to configure the project:**
-   ```bash
-   cmake ..
-   ```
-
-4. **Build the project:**
-   ```bash
-   make
-   ```
-
-5. **Run the executable:**
+4. **Run the executable:**
    ```bash
    ./WikiPath
    ```
 
-## Dataset
-- Place the `wikispeedia-data.txt` file in the `data/` directory.
-
-## Testing
-
-### Running Test Cases
-
-1. **Navigate to the build directory:**
+5. **Compile and run the test cases:**
    ```bash
-   cd build
-   ```
-
-2. **Build the test executable:**
-   ```bash
-   g++ ../tests/test_graph.cpp -I../include -o test_graph
-   ```
-
-3. **Run the test:**
-   ```bash
+   g++ tests/test_graph.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp -Iinclude -o test_graph
    ./test_graph
    ```
 
-### Expected Output
-
-Article 0: 1 -> NULL
-
-Article 1: 0 -> 2 -> NULL
-
-Article 2: 1 -> NULL
+## Dataset
+Ensure that your `data/articles.tsv` and `data/links.tsv` are properly formatted and placed in the `data` directory as described above.
