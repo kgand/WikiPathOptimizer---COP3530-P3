@@ -1,37 +1,45 @@
 #include "UI.h"
 #include <iostream>
+#include <iomanip>
 using namespace std;
-// Constructor initializing UI with graph and algorithms
-UI::UI(Graph &graph, BFS &bfsAlg, DFS &dfsAlg) : g(graph), bfs(bfsAlg), dfs(dfsAlg) {
-    // constructor body
+
+UI::UI(Graph &graph, BFS &bfsAlg, DFS &dfsAlg) : g(graph), bfs(bfsAlg), dfs(dfsAlg) {}
+
+void UI::getInput(int &source, int &target) {
+    do {
+        cout << "Enter source article number (0-" << g.getVertices()-1 << "): ";
+        cin >> source;
+    } while(source < 0 || source >= g.getVertices());
+    
+    do {
+        cout << "Enter target article number (0-" << g.getVertices()-1 << "): ";
+        cin >> target;
+    } while(target < 0 || target >= g.getVertices());
 }
 
-// Function to get user input for source and target articles
-void UI::getInput(int &source, int &target){
-    cout << "Enter source article number: ";
-    cin >> source;
-    cout << "Enter target article number: ";
-    cin >> target;
+void UI::displayMetrics(const string &algorithm, const vector<int> &path, const SearchMetrics &metrics) {
+    cout << "\n" << algorithm << " Results:" << endl;
+    cout << "Path: ";
+    if(metrics.pathFound) {
+        for(auto const &node : path) {
+            cout << node << " ";
+        }
+    } else {
+        cout << "No path found";
+    }
+    cout << "\nPath length: " << metrics.pathLength;
+    cout << "\nExecution time: " << fixed << setprecision(3) << metrics.executionTime << "ms" << endl;
 }
 
-// Function to start the user interface
-void UI::start(){
+void UI::start() {
     int source, target;
     getInput(source, target);
-
-    // perform BFS traversal
-    vector<int> bfsPath = bfs.traverse(source, target);
-    cout << "BFS Path from " << source << " to " << target << ": ";
-    for(auto const &node : bfsPath){
-        cout << node << " ";
-    }
-    cout << endl;
-
-    // perform DFS traversal
-    vector<int> dfsPath = dfs.traverse(source, target);
-    cout << "DFS Path from " << source << " to " << target << ": ";
-    for(auto const &node : dfsPath){
-        cout << node << " ";
-    }
-    cout << endl;
+    
+    SearchMetrics bfsMetrics, dfsMetrics;
+    
+    vector<int> bfsPath = bfs.traverse(source, target, bfsMetrics);
+    displayMetrics("BFS", bfsPath, bfsMetrics);
+    
+    vector<int> dfsPath = dfs.traverse(source, target, dfsMetrics);
+    displayMetrics("DFS", dfsPath, dfsMetrics);
 } 
