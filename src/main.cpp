@@ -1,8 +1,9 @@
 #include <iostream>
+using namespace std;
 
 // main function - entry point of the program
 int main() {
     // greet the user
-    std::cout << "Welcome to WikiPath Project!" << std::endl;
+    cout << "Welcome to WikiPath Project!" << endl;
     return 0;
 } 
