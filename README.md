@@ -82,3 +82,27 @@ We seek to determine whether BFS or DFS has a better performance when using a da
 
 ## Dataset
 - Place the `wikispeedia-data.txt` file in the `data/` directory.
+
+## Testing
+
+### Running Test Cases
+
+1. **Navigate to the build directory:**
+   ```bash
+   cd build
+   ```
+
+2. **Build the test executable:**
+   ```bash
+   g++ ../tests/test_graph.cpp -I../include -o test_graph
+   ```
+
+3. **Run the test:**
+   ```bash
+   ./test_graph
+   ```
+
+### Expected Output
+Article 0: 1 -> NULL
+Article 1: 0 -> 2 -> NULL
+Article 2: 1 -> NULL
