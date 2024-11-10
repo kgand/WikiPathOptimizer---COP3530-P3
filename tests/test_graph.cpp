@@ -1,52 +1,32 @@
-#include <iostream>
+#include "Graph.h"
+#include "BFS.h"
+#include "DFS.h"
 #include <cassert>
-#include <iomanip>
-#include "../include/Graph.h"
-#include "../include/BFS.h"
-#include "../include/DFS.h"
-using namespace std;
-
-// test basic graph construction
-void testGraphConstruction() {
-    Graph g(5);
-    assert(g.getVertices() == 5);
-    cout << "graph construction test passed" << endl;
-}
-
-// test path finding with both bfs and dfs
-void testPathFinding() {
-    // create a simple test graph
-    Graph g(4);
-    g.addEdge(0, 1);
-    g.addEdge(1, 2);
-    g.addEdge(2, 3);
-    
-    BFS bfs(g);
-    DFS dfs(g);
-    SearchMetrics bfsMetrics, dfsMetrics;
-    
-    // test bfs path finding
-    vector<int> bfsPath = bfs.traverse(0, 3, bfsMetrics);
-    assert(bfsMetrics.pathFound);
-    assert(bfsPath.size() == 4);
-    
-    // test dfs path finding
-    vector<int> dfsPath = dfs.traverse(0, 3, dfsMetrics);
-    assert(dfsMetrics.pathFound);
-    assert(dfsPath.size() == 4);
-    
-    // compare and display metrics
-    cout << "\nPath Finding Metrics Comparison:" << endl;
-    cout << fixed << setprecision(3);
-    cout << "BFS: Time=" << bfsMetrics.executionTime << "ms, Nodes=" << bfsMetrics.nodesVisited << endl;
-    cout << "DFS: Time=" << dfsMetrics.executionTime << "ms, Nodes=" << dfsMetrics.nodesVisited << endl;
-    
-    cout << "pathfinding test passed" << endl;
-}
+#include <iostream>
 
 int main() {
-    testGraphConstruction();
-    testPathFinding();
-    cout << "all tests passed!" << endl;
+    // Initialize graph with test data
+    Graph graph("data/articles.tsv", "data/links.tsv");
+
+    // Initialize BFS and DFS
+    BFS bfs(graph);
+    DFS dfs(graph);
+
+    // Test case: Algorithm to Computer_science
+    std::string source = "Algorithm";
+    std::string target = "Computer_science";
+
+    auto bfs_result = bfs.findPath(source, target);
+    std::vector<std::string> expected_bfs_path = {"Algorithm", "Computer_science"};
+    assert(bfs_result.first == expected_bfs_path);
+    assert(bfs_result.second.path_length == 2);
+    std::cout << "BFS test passed.\n";
+
+    auto dfs_result = dfs.findPath(source, target);
+    std::vector<std::string> expected_dfs_path = {"Algorithm", "Programming_language", "Computer_science"};
+    assert(dfs_result.first == expected_dfs_path);
+    assert(dfs_result.second.path_length == 3);
+    std::cout << "DFS test passed.\n";
+
     return 0;
-} 
+}
