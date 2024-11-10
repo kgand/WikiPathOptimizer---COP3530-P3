@@ -44,3 +44,41 @@ We seek to determine whether BFS or DFS has a better performance when using a da
 - **Code Review Management:** Khushi Chitalia
 - **Graph Structure Implementation:** Ananya Mundrathi
 - **Reporting (Video/Documentation):** Khushi Chitalia
+
+## Build and Run Instructions
+
+### Prerequisites
+- C++ compiler (supporting C++11)
+- CMake
+
+### Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/WikiPath.git
+   cd WikiPath
+   ```
+
+2. **Create a build directory:**
+   ```bash
+   mkdir build
+   cd build
+   ```
+
+3. **Run CMake to configure the project:**
+   ```bash
+   cmake ..
+   ```
+
+4. **Build the project:**
+   ```bash
+   make
+   ```
+
+5. **Run the executable:**
+   ```bash
+   ./WikiPath
+   ```
+
+## Dataset
+- Place the `wikispeedia-data.txt` file in the `data/` directory.
