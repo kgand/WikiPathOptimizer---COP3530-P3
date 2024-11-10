@@ -2,28 +2,28 @@
 #include <queue>
 #include <unordered_set>
 #include <chrono>
-using namespace std;
+#include <algorithm>
 
 // BFS constructor
 BFS::BFS(const Graph& graph) : graph(graph) {}
 
 // function to perform BFS and return the path along with metrics
-pair<vector<string>, BFSMetrics> BFS::findPath(const string& source, const string& target) {
+std::pair<std::vector<std::string>, BFSMetrics> BFS::findPath(const std::string& source, const std::string& target) {
     BFSMetrics metrics;
-    vector<string> path;
-    queue<string> q;
-    unordered_set<string> visited;
-    unordered_map<string, string> parent;
+    std::vector<std::string> path;
+    std::queue<std::string> q;
+    std::unordered_set<std::string> visited;
+    std::unordered_map<std::string, std::string> parent;
 
     // Start timing
-    auto start = chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
 
     q.push(source);
     visited.insert(source);
     metrics.nodes_visited++;
 
     while (!q.empty()) {
-        string current = q.front();
+        std::string current = q.front();
         q.pop();
 
         if (current == target) {
@@ -41,18 +41,18 @@ pair<vector<string>, BFSMetrics> BFS::findPath(const string& source, const strin
     }
 
     // End timing
-    auto end = chrono::high_resolution_clock::now();
-    metrics.execution_time = chrono::duration<double, micro>(end - start).count();
+    auto end = std::chrono::high_resolution_clock::now();
+    metrics.execution_time = std::chrono::duration<double, std::micro>(end - start).count();
 
     // Reconstruct path
     if (visited.find(target) != visited.end()) {
-        string crawl = target;
+        std::string crawl = target;
         path.push_back(crawl);
         while (parent.find(crawl) != parent.end()) {
             crawl = parent[crawl];
             path.push_back(crawl);
         }
-        reverse(path.begin(), path.end());
+        std::reverse(path.begin(), path.end());
         metrics.path_length = path.size();
     }
 

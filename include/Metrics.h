@@ -1,12 +1,16 @@
 #ifndef METRICS_H
 #define METRICS_H
 
-// struct to store metrics for comparing search algorithms
+// metrics struct to track search algorithm performance
 struct SearchMetrics {
-    bool pathFound = false; // whether a path was found
-    double executionTime = 0.0; // time taken in milliseconds
-    size_t pathLength = 0; // length of path found
-    size_t nodesVisited = 0; // number of nodes visited during search
+    int nodes_visited = 0;
+    double execution_time = 0.0;  // in microseconds
+    int path_length = 0;
+    bool pathFound = false;
 };
+
+// use same metrics structure for both BFS and DFS
+typedef SearchMetrics BFSMetrics;
+typedef SearchMetrics DFSMetrics;
 
 #endif // METRICS_H 

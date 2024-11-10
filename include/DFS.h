@@ -2,13 +2,9 @@
 #define DFS_H
 
 #include "Graph.h"
+#include "Metrics.h"
 #include <vector>
 #include <string>
-
-struct DFSMetrics {
-    int nodes_visited;
-    double execution_time; // in microseconds
-};
 
 class DFS {
 public:

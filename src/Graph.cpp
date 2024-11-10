@@ -4,102 +4,114 @@
 #include <iostream>
 
 // constructor to initialize the graph
-Graph::Graph(const std::string& articlesFile, const std::string& linksFile, const std::string& matrixFile) {
+Graph::Graph(const string& articlesFile, const string& linksFile, const string& matrixFile) {
     loadArticles(articlesFile);
+    // initialize adjacency list with size equal to number of articles
+    adjacency_list.resize(id_to_name.size());
     loadLinks(linksFile);
-    loadShortestPathMatrix(matrixFile);
+    if (!matrixFile.empty()) {
+        loadShortestPathMatrix(matrixFile);
+    }
 }
 
 // function to load articles from articles.tsv
-void Graph::loadArticles(const std::string& articlesFile) {
-    std::ifstream infile(articlesFile);
+void Graph::loadArticles(const string& articlesFile) {
+    ifstream infile(articlesFile);
     if (!infile.is_open()) {
-        std::cerr << "Error opening articles file: " << articlesFile << std::endl;
+        cerr << "Error opening articles file: " << articlesFile << endl;
         return;
     }
 
-    std::string line;
-    while (std::getline(infile, line)) {
-        // Assuming each line has an article ID and name separated by a tab
-        std::stringstream ss(line);
-        std::string id, name;
-        if (std::getline(ss, id, '\t') && std::getline(ss, name)) {
-            id_to_name[std::stoi(id)] = name;
-            name_to_id[name] = std::stoi(id);
-            add_vertex(name, graph);
-        }
+    string line;
+    int id = 0;
+    while (getline(infile, line)) {
+        // skip comment lines
+        if (line.empty() || line[0] == '#') continue;
+        
+        // store mappings between IDs and names
+        id_to_name[id] = line;
+        name_to_id[line] = id;
+        id++;
     }
     infile.close();
 }
 
-// function to load links from links.tsv
-void Graph::loadLinks(const std::string& linksFile) {
-    std::ifstream infile(linksFile);
-    if (!infile.is_open()) {
-        std::cerr << "Error opening links file: " << linksFile << std::endl;
-        return;
+// function to add edge between two articles
+void Graph::addEdge(const string& source, const string& target) {
+    auto src_it = name_to_id.find(source);
+    auto tgt_it = name_to_id.find(target);
+    
+    if (src_it != name_to_id.end() && tgt_it != name_to_id.end()) {
+        adjacency_list[src_it->second].push_back(tgt_it->second);
     }
-
-    std::string line;
-    while (std::getline(infile, line)) {
-        // Assuming each line has source and target article names separated by a tab
-        std::stringstream ss(line);
-        std::string source, target;
-        if (std::getline(ss, source, '\t') && std::getline(ss, target)) {
-            int src_id = name_to_id[source];
-            int tgt_id = name_to_id[target];
-            add_edge(src_id, tgt_id, graph);
-        }
-    }
-    infile.close();
 }
 
-// function to get neighbors (used in BFS and DFS)
-std::vector<std::string> Graph::getNeighbors(const std::string& article) const {
-    std::vector<std::string> neighbors;
+// function to get neighbors of an article
+vector<string> Graph::getNeighbors(const string& article) const {
+    vector<string> neighbors;
     auto it = name_to_id.find(article);
-    if (it == name_to_id.end()) {
-        return neighbors;
+    
+    if (it != name_to_id.end()) {
+        int id = it->second;
+        for (int neighbor_id : adjacency_list[id]) {
+            neighbors.push_back(id_to_name.at(neighbor_id));
+        }
     }
-    int id = it->second;
-    auto edge_range = out_edges(id, graph);
-    for (auto edge_it = edge_range.first; edge_it != edge_range.second; ++edge_it) {
-        int tgt = target(*edge_it, graph);
-        neighbors.push_back(id_to_name.at(tgt));
-    }
+    
     return neighbors;
 }
 
-// Function to load shortest-path distance matrix
-void Graph::loadShortestPathMatrix(const std::string& matrixFile) {
-    std::ifstream infile(matrixFile);
+// function to get distance between two articles
+int Graph::getDistance(const string& source, const string& target) const {
+    auto src_it = name_to_id.find(source);
+    auto tgt_it = name_to_id.find(target);
+    
+    if (src_it == name_to_id.end() || tgt_it == name_to_id.end() || 
+        distance_matrix.empty()) {
+        return -1;
+    }
+    
+    return distance_matrix[src_it->second][tgt_it->second];
+}
+
+// function to load links from links.tsv
+void Graph::loadLinks(const string& linksFile) {
+    ifstream infile(linksFile);
     if (!infile.is_open()) {
-        std::cerr << "Error opening shortest-path distance matrix file: " << matrixFile << std::endl;
+        cerr << "Error opening links file: " << linksFile << endl;
         return;
     }
 
-    std::string line;
-    while (std::getline(infile, line)) {
-        // Each line represents distances from a source to all targets
-        std::vector<char> distances(line.begin(), line.end());
-        distance_matrix.push_back(distances);
+    string line;
+    while (getline(infile, line)) {
+        stringstream ss(line);
+        string source, target;
+        if (getline(ss, source, '\t') && getline(ss, target)) {
+            addEdge(source, target);
+        }
     }
     infile.close();
 }
 
-// function to get the distance between two articles
-int Graph::getDistance(const std::string& source, const std::string& target) const {
-    auto it_src = name_to_id.find(source);
-    auto it_tgt = name_to_id.find(target);
-    if (it_src == name_to_id.end() || it_tgt == name_to_id.end()) {
-        return -1; // indicates no path
+// function to load shortest path matrix
+void Graph::loadShortestPathMatrix(const string& matrixFile) {
+    ifstream infile(matrixFile);
+    if (!infile.is_open()) {
+        cerr << "Error opening matrix file: " << matrixFile << endl;
+        return;
     }
-    int src_id = it_src->second;
-    int tgt_id = it_tgt->second;
-    if (src_id >= distance_matrix.size() || tgt_id >= distance_matrix[src_id].size()) {
-        return -1; // invalid indices
+
+    string line;
+    while (getline(infile, line)) {
+        vector<int> row;
+        stringstream ss(line);
+        int dist;
+        while (ss >> dist) {
+            row.push_back(dist);
+        }
+        if (!row.empty()) {
+            distance_matrix.push_back(row);
+        }
     }
-    char dist_char = distance_matrix[src_id][tgt_id];
-    if (dist_char == '_') return -1;
-    return dist_char - '0';
+    infile.close();
 }

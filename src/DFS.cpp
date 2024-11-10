@@ -2,6 +2,7 @@
 #include <stack>
 #include <unordered_set>
 #include <chrono>
+#include <algorithm>
 
 // DFS constructor
 DFS::DFS(const Graph& graph) : graph(graph) {}

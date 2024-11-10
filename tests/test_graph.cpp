@@ -4,29 +4,33 @@
 #include <cassert>
 #include <iostream>
 
-int main() {
-    // Initialize graph with test data
-    Graph graph("data/articles.tsv", "data/links.tsv");
+using namespace std;
 
-    // Initialize BFS and DFS
+int main() {
+    // create our graph with data files
+    Graph graph("data/articles.tsv", "data/links.tsv", "data/shortest-path-distance-matrix.txt");
+
+    // create our search algorithms
     BFS bfs(graph);
     DFS dfs(graph);
 
-    // Test case: Algorithm to Computer_science
-    std::string source = "Algorithm";
-    std::string target = "Computer_science";
+    // test case: find path from Algorithm to Computer_science
+    string source = "Algorithm";
+    string target = "Computer_science";
 
+    // run BFS and check results
     auto bfs_result = bfs.findPath(source, target);
-    std::vector<std::string> expected_bfs_path = {"Algorithm", "Computer_science"};
+    vector<string> expected_bfs_path = {"Algorithm", "Computer_science"};
     assert(bfs_result.first == expected_bfs_path);
     assert(bfs_result.second.path_length == 2);
-    std::cout << "BFS test passed.\n";
+    cout << "BFS test passed.\n";
 
+    // run DFS and check results
     auto dfs_result = dfs.findPath(source, target);
-    std::vector<std::string> expected_dfs_path = {"Algorithm", "Programming_language", "Computer_science"};
+    vector<string> expected_dfs_path = {"Algorithm", "Programming_language", "Computer_science"};
     assert(dfs_result.first == expected_dfs_path);
     assert(dfs_result.second.path_length == 3);
-    std::cout << "DFS test passed.\n";
+    cout << "DFS test passed.\n";
 
     return 0;
 }

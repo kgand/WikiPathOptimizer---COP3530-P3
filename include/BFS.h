@@ -4,19 +4,21 @@
 #include "Graph.h"
 #include <vector>
 #include <string>
+#include <utility>
+#include "Metrics.h"
 
-struct BFSMetrics {
-    int nodes_visited;
-    double execution_time; // in microseconds
-};
+using namespace std;
 
 class BFS {
 public:
+    // constructor takes our graph
     BFS(const Graph& graph);
-    std::pair<std::vector<std::string>, BFSMetrics> findPath(const std::string& source, const std::string& target);
+    
+    // finds path between two articles using BFS
+    pair<vector<string>, BFSMetrics> findPath(const string& source, const string& target);
 
 private:
-    const Graph& graph;
+    const Graph& graph;  // reference to our graph
 };
 
 #endif // BFS_H 
