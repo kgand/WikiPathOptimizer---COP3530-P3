@@ -11,13 +11,26 @@ bool DataLoader::loadData(const string &filePath, Graph &graph) {
     }
 
     string line;
-    // read each line representing an edge
     while(getline(infile, line)) {
+        // skip empty lines
+        if(line.empty()) continue;
+        
         stringstream ss(line);
-        int src, dest;
-        // assume each line has source and destination separated by space
-        ss >> src >> dest;
-        graph.addEdge(src, dest);
+        string src_str, dest_str;
+        
+        // read source and destination as strings
+        if(getline(ss, src_str, ',') && getline(ss, dest_str, ',')) {
+            try {
+                int src = stoi(src_str);
+                int dest = stoi(dest_str);
+                if(src >= 0 && dest >= 0 && src < graph.getVertices() && dest < graph.getVertices()) {
+                    graph.addEdge(src, dest);
+                }
+            } catch(const exception& e) {
+                cerr << "Error parsing line: " << line << endl;
+                continue;
+            }
+        }
     }
 
     infile.close();
