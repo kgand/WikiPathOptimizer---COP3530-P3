@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <chrono>
 #include <algorithm>
+#include <ratio>
 
 using namespace std;
 
@@ -42,9 +43,9 @@ pair<vector<string>, BFSMetrics> BFS::findPath(const string& source, const strin
         }
     }
 
-    // End timing
+    // End timing and calculate duration in microseconds
     auto end = chrono::high_resolution_clock::now();
-    metrics.execution_time = chrono::duration<double, chrono::micro>(end - start).count();
+    metrics.execution_time = chrono::duration_cast<chrono::microseconds>(end - start).count();
 
     // Reconstruct path
     if (visited.find(target) != visited.end()) {
