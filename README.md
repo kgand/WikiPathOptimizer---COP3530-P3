@@ -32,51 +32,59 @@ We seek to determine whether BFS or DFS has a better performance when using a da
 - Represent data using a graph.
 - Implement BFS and DFS algorithms for pathfinding.
 
-## Distribution of Responsibility
-- **Data Analysis:** Kovidh Gandreti
-- **Algorithm Implementation:** Khushi Chitalia
-- **Data Visualization:** Ananya Mundrathi
-- **Performance Benchmarking:** Kovidh Gandreti
-- **User Interface Design:** Ananya Mundrathi
-- **Integration Testing:** Kovidh Gandreti
-- **Backend System Architecture:** Kovidh Gandreti
-- **Code Review Management:** Khushi Chitalia
-- **Graph Structure Implementation:** Ananya Mundrathi
-- **Reporting (Video/Documentation):** Khushi Chitalia
-
-## Build and Run Instructions
-
-### Prerequisites
-- C++ compiler (supporting C++11)
-- g++
-
-### Steps
-
+## Setup
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/yourusername/WikiPath.git
    cd WikiPath
    ```
 
-2. **Ensure the data files are in place:**
-   - `data/articles.tsv`: Contains article names (one per line).
-   - `data/links.tsv`: Contains links in the format `source\target`.
+2. **Ensure data files are in the `data` directory:**
+   - `articles.tsv`
+   - `links.tsv`
+   - `paths_finished.tsv`
+   - `paths_unfinished.tsv`
+   - `shortest-path-distance-matrix.txt`
 
-3. **Compile the main program:**
+## Build Instructions
+1. **Compile the project:**
    ```bash
-   g++ src/main.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp src/DataLoader.cpp src/ArticleMapper.cpp src/UI.cpp -Iinclude -o WikiPath
+   g++ src/main.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp -Iinclude -o wikipath -lboost_graph
    ```
 
-4. **Run the executable:**
+2. **Run the application:**
    ```bash
-   ./WikiPath
+   ./wikipath
    ```
 
-5. **Compile and run the test cases:**
+## Testing
+1. **Compile and run the test cases:**
    ```bash
-   g++ tests/test_graph.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp -Iinclude -o test_graph
+   g++ tests/test_graph.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp -Iinclude -o test_graph -lboost_graph
    ./test_graph
    ```
 
-## Dataset
-Ensure that your `data/articles.tsv` and `data/links.tsv` are properly formatted and placed in the `data` directory as described above.
+## Usage Example
+Enter source article name: Algorithm
+
+Enter target article name: Computer_science
+
+BFS Results:
+
+Path: Algorithm -> Computer_science
+
+Path length: 2
+
+Nodes visited: 15
+
+Execution time: 23.0 microseconds
+
+DFS Results:
+
+Path: Algorithm -> Programming_language -> Computer_science
+
+Path length: 3
+
+Nodes visited: 25
+
+Execution time: 31.0 microseconds
