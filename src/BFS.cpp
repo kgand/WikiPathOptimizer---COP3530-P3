@@ -1,5 +1,6 @@
 #include "BFS.h"
 #include <chrono>
+#include <algorithm>
 using namespace std;
 
 // constructor to initialize bfs with given graph

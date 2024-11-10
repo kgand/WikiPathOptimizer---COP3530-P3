@@ -1,4 +1,5 @@
 #include "DFS.h"
+#include <algorithm>
 using namespace std;
 
 // Constructor initializing DFS with the given graph
