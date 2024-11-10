@@ -6,17 +6,17 @@ if (!(Test-Path build)) {
 # Get the current directory (project root)
 $projectRoot = Get-Location
 
-# Copy data files to build directory
+# Copy data files to build directory recursively and force overwriting existing files
 Copy-Item -Path "$projectRoot\data" -Destination "$projectRoot\build" -Recurse -Force
 
-# Change to build directory
+# Navigate to the build directory to initiate the build process
 Set-Location "$projectRoot\build"
 
-# Compile main program using absolute paths
+# Compile the main application using absolute paths and include directories
 g++ "$projectRoot\src\main.cpp" "$projectRoot\src\Graph.cpp" "$projectRoot\src\BFS.cpp" "$projectRoot\src\DFS.cpp" -I"$projectRoot\include" -o wikipath
 
-# Compile test program using absolute paths
+# Compile the test program using absolute paths and include directories
 g++ "$projectRoot\tests\test_graph.cpp" "$projectRoot\src\Graph.cpp" "$projectRoot\src\BFS.cpp" "$projectRoot\src\DFS.cpp" -I"$projectRoot\include" -o test_graph
 
-# Return to original directory
+# Return to the original project root directory after compilation
 Set-Location $projectRoot

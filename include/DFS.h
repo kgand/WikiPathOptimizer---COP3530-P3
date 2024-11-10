@@ -6,10 +6,12 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class DFS {
 public:
     DFS(const Graph& graph);
-    std::pair<std::vector<std::string>, DFSMetrics> findPath(const std::string& source, const std::string& target);
+    pair<vector<string>, DFSMetrics> findPath(const string& source, const string& target);
 
 private:
     const Graph& graph;

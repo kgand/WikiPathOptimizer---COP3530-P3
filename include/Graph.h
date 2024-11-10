@@ -8,40 +8,40 @@
 
 using namespace std;
 
-// this class represents our wikipedia article graph using adjacency list
+// this class represents our wikipedia article graph using an adjacency list
 class Graph {
 public:
-    // constructor that takes file paths for articles and links
+    // constructor that takes file paths for articles, links, and an optional shortest path matrix
     Graph(const string& articlesFile, const string& linksFile, const string& matrixFile = "");
     
-    // gets neighboring articles for a given article
+    // retrieves neighboring articles for a given article
     vector<string> getNeighbors(const string& article) const;
     
-    // gets shortest path distance between two articles
+    // retrieves the shortest path distance between two articles
     int getDistance(const string& source, const string& target) const;
 
-    // adds an edge between two articles
+    // adds a directed edge between two articles in the graph
     void addEdge(const string& source, const string& target);
 
 private:
-    // loads article names and IDs from file
+    // loads article names and assigns unique IDs from the articles file
     void loadArticles(const string& articlesFile);
     
-    // loads links between articles from file
+    // loads links between articles from the links file
     void loadLinks(const string& linksFile);
     
-    // loads pre-computed shortest path matrix
+    // loads a pre-computed shortest path distance matrix from a file
     void loadShortestPathMatrix(const string& matrixFile);
 
-    // maps for converting between article names and IDs
+    // maps for converting between article IDs and names
     unordered_map<int, string> id_to_name;
     unordered_map<string, int> name_to_id;
     
-    // adjacency list representation
+    // adjacency list representation where each list contains neighboring article IDs
     vector<list<int>> adjacency_list;
     
-    // matrix storing shortest path distances
+    // matrix storing shortest path distances between articles
     vector<vector<int>> distance_matrix;
 };
 
-#endif // GRAPH_H 
+#endif // graph_h 

@@ -4,26 +4,28 @@
 #include <chrono>
 #include <algorithm>
 
+using namespace std;
+
 // BFS constructor
 BFS::BFS(const Graph& graph) : graph(graph) {}
 
 // function to perform BFS and return the path along with metrics
-std::pair<std::vector<std::string>, BFSMetrics> BFS::findPath(const std::string& source, const std::string& target) {
+pair<vector<string>, BFSMetrics> BFS::findPath(const string& source, const string& target) {
     BFSMetrics metrics;
-    std::vector<std::string> path;
-    std::queue<std::string> q;
-    std::unordered_set<std::string> visited;
-    std::unordered_map<std::string, std::string> parent;
+    vector<string> path;
+    queue<string> q;
+    unordered_set<string> visited;
+    unordered_map<string, string> parent;
 
     // Start timing
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
 
     q.push(source);
     visited.insert(source);
     metrics.nodes_visited++;
 
     while (!q.empty()) {
-        std::string current = q.front();
+        string current = q.front();
         q.pop();
 
         if (current == target) {
@@ -41,18 +43,18 @@ std::pair<std::vector<std::string>, BFSMetrics> BFS::findPath(const std::string&
     }
 
     // End timing
-    auto end = std::chrono::high_resolution_clock::now();
-    metrics.execution_time = std::chrono::duration<double, std::micro>(end - start).count();
+    auto end = chrono::high_resolution_clock::now();
+    metrics.execution_time = chrono::duration<double, chrono::micro>(end - start).count();
 
     // Reconstruct path
     if (visited.find(target) != visited.end()) {
-        std::string crawl = target;
+        string crawl = target;
         path.push_back(crawl);
         while (parent.find(crawl) != parent.end()) {
             crawl = parent[crawl];
             path.push_back(crawl);
         }
-        std::reverse(path.begin(), path.end());
+        reverse(path.begin(), path.end());
         metrics.path_length = path.size();
     }
 

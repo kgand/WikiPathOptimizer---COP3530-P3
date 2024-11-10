@@ -3,61 +3,65 @@
 #include "DFS.h"
 #include <iostream>
 
+using namespace std;
+
+// entry point of the application
 int main() {
-    // Initialize graph with articles and links data
+    // initialize the graph with articles and links data files
     Graph graph("data/articles.tsv", "data/links.tsv");
 
-    // Initialize BFS and DFS with the graph
+    // create instances of BFS and DFS algorithms using the initialized graph
     BFS bfs(graph);
     DFS dfs(graph);
 
-    std::string source, target;
+    string source, target;
 
-    // Prompt user for source and target articles
-    std::cout << "Enter source article name: ";
-    std::getline(std::cin, source);
-    std::cout << "Enter target article name: ";
-    std::getline(std::cin, target);
+    // prompt the user to enter the name of the source article
+    cout << "Enter source article name: ";
+    getline(cin, source);
+    // prompt the user to enter the name of the target article
+    cout << "Enter target article name: ";
+    getline(cin, target);
 
-    // Perform BFS
+    // execute BFS to find the path from source to target
     auto bfs_result = bfs.findPath(source, target);
-    std::vector<std::string> bfs_path = bfs_result.first;
+    vector<string> bfs_path = bfs_result.first;
     BFSMetrics bfs_metrics = bfs_result.second;
 
-    // Perform DFS
+    // execute DFS to find the path from source to target
     auto dfs_result = dfs.findPath(source, target);
-    std::vector<std::string> dfs_path = dfs_result.first;
+    vector<string> dfs_path = dfs_result.first;
     DFSMetrics dfs_metrics = dfs_result.second;
 
-    // Display BFS results
-    std::cout << "\nBFS Results:\n";
+    // display the results obtained from BFS
+    cout << "\nBFS Results:\n";
     if (!bfs_path.empty()) {
-        std::cout << "Path: ";
+        cout << "Path: ";
         for (size_t i = 0; i < bfs_path.size(); ++i) {
-            std::cout << bfs_path[i];
-            if (i != bfs_path.size() - 1) std::cout << " -> ";
+            cout << bfs_path[i];
+            if (i != bfs_path.size() - 1) cout << " -> ";
         }
-        std::cout << "\nPath length: " << bfs_metrics.path_length;
+        cout << "\nPath Length: " << bfs_metrics.path_length;
     } else {
-        std::cout << "No path found using BFS.";
+        cout << "No path found using BFS.";
     }
-    std::cout << "\nNodes visited: " << bfs_metrics.nodes_visited;
-    std::cout << "\nExecution time: " << bfs_metrics.execution_time << " microseconds\n";
+    cout << "\nNodes Visited: " << bfs_metrics.nodes_visited;
+    cout << "\nExecution Time: " << bfs_metrics.execution_time << " microseconds\n";
 
-    // Display DFS results
-    std::cout << "\nDFS Results:\n";
+    // display the results obtained from DFS
+    cout << "\nDFS Results:\n";
     if (!dfs_path.empty()) {
-        std::cout << "Path: ";
+        cout << "Path: ";
         for (size_t i = 0; i < dfs_path.size(); ++i) {
-            std::cout << dfs_path[i];
-            if (i != dfs_path.size() - 1) std::cout << " -> ";
+            cout << dfs_path[i];
+            if (i != dfs_path.size() - 1) cout << " -> ";
         }
-        std::cout << "\nPath length: " << dfs_metrics.path_length;
+        cout << "\nPath Length: " << dfs_metrics.path_length;
     } else {
-        std::cout << "No path found using DFS.";
+        cout << "No path found using DFS.";
     }
-    std::cout << "\nNodes visited: " << dfs_metrics.nodes_visited;
-    std::cout << "\nExecution time: " << dfs_metrics.execution_time << " microseconds\n";
+    cout << "\nNodes Visited: " << dfs_metrics.nodes_visited;
+    cout << "\nExecution Time: " << dfs_metrics.execution_time << " microseconds\n";
 
     return 0;
 } 
