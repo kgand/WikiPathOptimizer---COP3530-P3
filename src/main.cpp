@@ -20,7 +20,7 @@ int main() {
 
     // create and load data
     DataLoader loader;
-    if (!loader.loadData("data/wikispeedia-data.txt", wikiGraph)) {
+    if (!loader.loadData("data/links.tsv", wikiGraph, articleMapper)) {
         cerr << "Error loading graph data." << endl;
         return -1;
     }
