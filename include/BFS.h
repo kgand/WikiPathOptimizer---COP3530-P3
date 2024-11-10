@@ -2,22 +2,20 @@
 #define BFS_H
 
 #include "Graph.h"
+#include "Metrics.h"
 #include <vector>
 #include <queue>
 using namespace std;
-// BFS class to perform Breadth-First Search on the graph
+
 class BFS {
 public:
-    // Constructor taking a graph reference
     BFS(const Graph &graph);
-
-    // Function to perform BFS from a source node
-    vector<int> traverse(int source, int target);
+    vector<int> traverse(int source, int target, SearchMetrics &metrics);
 
 private:
-    const Graph &g; // Reference to the graph
-    vector<bool> visited; // Track visited nodes
-    vector<int> parent; // Track parent nodes for path reconstruction
+    const Graph &g;
+    vector<bool> visited;
+    vector<int> parent;
 };
 
 #endif // BFS_H 
