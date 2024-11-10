@@ -1,64 +1,60 @@
 #include "BFS.h"
+#include <queue>
+#include <unordered_set>
 #include <chrono>
-#include <algorithm>
 using namespace std;
 
-// constructor to initialize bfs with given graph
-BFS::BFS(const Graph &graph) : g(graph), visited(graph.getVertices(), false), parent(graph.getVertices(), -1) {}
+// BFS constructor
+BFS::BFS(const Graph& graph) : graph(graph) {}
 
-// main traverse function that uses bfs to find path
-vector<int> BFS::traverse(int source, int target, SearchMetrics &metrics) {
-    // start timing
+// function to perform BFS and return the path along with metrics
+pair<vector<string>, BFSMetrics> BFS::findPath(const string& source, const string& target) {
+    BFSMetrics metrics;
+    vector<string> path;
+    queue<string> q;
+    unordered_set<string> visited;
+    unordered_map<string, string> parent;
+
+    // Start timing
     auto start = chrono::high_resolution_clock::now();
-    
-    // reset arrays and metrics
-    fill(visited.begin(), visited.end(), false);
-    fill(parent.begin(), parent.end(), -1);
-    metrics = SearchMetrics();
-    
-    // create queue for bfs
-    queue<int> q;
-    visited[source] = true;
+
     q.push(source);
-    metrics.nodesVisited++;
-    
-    // perform bfs
-    while(!q.empty()) {
-        int current = q.front();
+    visited.insert(source);
+    metrics.nodes_visited++;
+
+    while (!q.empty()) {
+        string current = q.front();
         q.pop();
-        
-        if(current == target) {
-            metrics.pathFound = true;
+
+        if (current == target) {
             break;
         }
-        
-        // explore neighbors
-        for(auto const &adj : g.getAdjList()[current]) {
-            if(!visited[adj]) {
-                visited[adj] = true;
-                metrics.nodesVisited++;
-                parent[adj] = current;
-                q.push(adj);
+
+        for (const auto& neighbor : graph.getNeighbors(current)) {
+            if (visited.find(neighbor) == visited.end()) {
+                q.push(neighbor);
+                visited.insert(neighbor);
+                parent[neighbor] = current;
+                metrics.nodes_visited++;
             }
         }
     }
-    
-    // reconstruct path if found
-    vector<int> path;
-    if(metrics.pathFound) {
-        int crawl = target;
+
+    // End timing
+    auto end = chrono::high_resolution_clock::now();
+    metrics.execution_time = chrono::duration<double, micro>(end - start).count();
+
+    // Reconstruct path
+    if (visited.find(target) != visited.end()) {
+        string crawl = target;
         path.push_back(crawl);
-        while(parent[crawl] != -1) {
-            path.push_back(parent[crawl]);
+        while (parent.find(crawl) != parent.end()) {
             crawl = parent[crawl];
+            path.push_back(crawl);
         }
         reverse(path.begin(), path.end());
+        metrics.path_length = path.size();
     }
-    
-    // calculate final metrics
-    auto end = chrono::high_resolution_clock::now();
-    metrics.executionTime = chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0;
-    metrics.pathLength = path.size();
-    
-    return path;
+
+    return {path, metrics};
 } 
