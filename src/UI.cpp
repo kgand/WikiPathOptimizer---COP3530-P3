@@ -3,32 +3,54 @@
 #include <iomanip>
 using namespace std;
 
-UI::UI(Graph &graph, BFS &bfsAlg, DFS &dfsAlg) : g(graph), bfs(bfsAlg), dfs(dfsAlg) {}
+UI::UI(Graph &graph, BFS &bfsAlg, DFS &dfsAlg, ArticleMapper &mapper) 
+    : g(graph), bfs(bfsAlg), dfs(dfsAlg), articleMapper(mapper) {}
 
 void UI::getInput(int &source, int &target) {
-    do {
-        cout << "Enter source article number (0-" << g.getVertices()-1 << "): ";
-        cin >> source;
-    } while(source < 0 || source >= g.getVertices());
+    string sourceName, targetName;
     
-    do {
-        cout << "Enter target article number (0-" << g.getVertices()-1 << "): ";
-        cin >> target;
-    } while(target < 0 || target >= g.getVertices());
+    cout << "Enter source article name: ";
+    getline(cin, sourceName);
+    source = articleMapper.getArticleIndex(sourceName);
+    
+    while (source == -1) {
+        cout << "Article not found. Please try again: ";
+        getline(cin, sourceName);
+        source = articleMapper.getArticleIndex(sourceName);
+    }
+    
+    cout << "Enter target article name: ";
+    getline(cin, targetName);
+    target = articleMapper.getArticleIndex(targetName);
+    
+    while (target == -1) {
+        cout << "Article not found. Please try again: ";
+        getline(cin, targetName);
+        target = articleMapper.getArticleIndex(targetName);
+    }
 }
 
-void UI::displayMetrics(const string &algorithm, const vector<int> &path, const SearchMetrics &metrics) {
+void UI::displayPath(const vector<int> &path) {
+    for (size_t i = 0; i < path.size(); i++) {
+        cout << articleMapper.getArticleName(path[i]);
+        if (i < path.size() - 1) cout << " -> ";
+    }
+    cout << endl;
+}
+
+void UI::displayMetrics(const string &algorithm, const vector<int> &path, 
+                       const SearchMetrics &metrics) {
     cout << "\n" << algorithm << " Results:" << endl;
     cout << "Path: ";
-    if(metrics.pathFound) {
-        for(auto const &node : path) {
-            cout << node << " ";
-        }
+    if (metrics.pathFound) {
+        displayPath(path);
     } else {
         cout << "No path found";
     }
-    cout << "\nPath length: " << metrics.pathLength;
-    cout << "\nExecution time: " << fixed << setprecision(3) << metrics.executionTime << "ms" << endl;
+    cout << "Path length: " << metrics.pathLength << endl;
+    cout << "Nodes visited: " << metrics.nodesVisited << endl;
+    cout << "Execution time: " << fixed << setprecision(3) 
+         << metrics.executionTime << "ms" << endl;
 }
 
 void UI::start() {

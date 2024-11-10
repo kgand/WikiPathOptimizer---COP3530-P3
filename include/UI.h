@@ -4,24 +4,25 @@
 #include "Graph.h"
 #include "BFS.h"
 #include "DFS.h"
+#include "ArticleMapper.h"
 #include <string>
 using namespace std;
-// UI class to handle user interactions
+
 class UI {
 public:
-    // Constructor taking references to Graph, BFS, and DFS
-    UI(Graph &graph, BFS &bfsAlg, DFS &dfsAlg);
-
-    // Function to start the UI
+    UI(Graph &graph, BFS &bfsAlg, DFS &dfsAlg, ArticleMapper &mapper);
     void start();
 
 private:
-    Graph &g; // Reference to the graph
-    BFS &bfs; // Reference to BFS algorithm
-    DFS &dfs; // Reference to DFS algorithm
-
-    // Function to get user input for source and target
+    Graph &g;
+    BFS &bfs;
+    DFS &dfs;
+    ArticleMapper &articleMapper;
+    
     void getInput(int &source, int &target);
+    void displayMetrics(const string &algorithm, const vector<int> &path, 
+                       const SearchMetrics &metrics);
+    void displayPath(const vector<int> &path);
 };
 
 #endif // UI_H 
