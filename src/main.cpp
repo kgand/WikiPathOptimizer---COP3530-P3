@@ -4,35 +4,33 @@
 #include "DFS.h"
 #include "DataLoader.h"
 #include "UI.h"
+#include "ArticleMapper.h"
 using namespace std;
 
 int main() {
-    // define number of articles (nodes)
-    int numArticles = 4604; // total articles in dataset
-
-    // create a graph with the number of articles
-    Graph wikiGraph(numArticles);
-
-    // create DataLoader object
-    DataLoader loader;
-
-    // path to dataset file
-    string datasetPath = "data/wikispeedia-data.txt";
-
-    // load data into graph
-    if(!loader.loadData(datasetPath, wikiGraph)){
-        cerr << "Error loading data." << endl;
+    // create article mapper and load articles
+    ArticleMapper articleMapper;
+    if (!articleMapper.loadArticles("data/articles.tsv")) {
+        cerr << "Error loading articles." << endl;
         return -1;
     }
 
-    // create BFS and DFS objects
+    // create graph with number of articles
+    Graph wikiGraph(articleMapper.size());
+
+    // create and load data
+    DataLoader loader;
+    if (!loader.loadData("data/wikispeedia-data.txt", wikiGraph)) {
+        cerr << "Error loading graph data." << endl;
+        return -1;
+    }
+
+    // create algorithm objects
     BFS bfs(wikiGraph);
     DFS dfs(wikiGraph);
 
-    // create UI object
-    UI userInterface(wikiGraph, bfs, dfs);
-
-    // start the user interface
+    // create and start UI
+    UI userInterface(wikiGraph, bfs, dfs, articleMapper);
     userInterface.start();
 
     return 0;
