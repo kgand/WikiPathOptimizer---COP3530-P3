@@ -4,13 +4,25 @@ using namespace std;
 
 // Constructor to initialize graph with given number of vertices
 Graph::Graph(int vertices) : V(vertices), adjList(vertices) {
-    // Initialize adjacency list for each vertex
+    if(vertices <= 0) {
+        throw invalid_argument("Number of vertices must be positive");
+    }
 }
 
 // Function to add an edge from src to dest
 void Graph::addEdge(int src, int dest) {
-    adjList[src].push_back(dest); // add dest to src's list
-    adjList[dest].push_back(src); // assuming undirected graph
+    if(src < 0 || src >= V || dest < 0 || dest >= V) {
+        cerr << "Invalid vertex indices" << endl;
+        return;
+    }
+    
+    // check if edge already exists
+    for(const auto &adj : adjList[src]) {
+        if(adj == dest) return;
+    }
+    
+    adjList[src].push_back(dest);
+    adjList[dest].push_back(src);
 }
 
 // Function to display the adjacency list of the graph
