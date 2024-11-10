@@ -3,6 +3,7 @@
 #include "BFS.h"
 #include "DFS.h"
 #include "DataLoader.h"
+#include "UI.h"
 using namespace std;
 
 int main() {
@@ -24,32 +25,15 @@ int main() {
         return -1;
     }
 
-    // display the graph (optional, can be large)
-    // wikiGraph.displayGraph();
-
     // create BFS and DFS objects
     BFS bfs(wikiGraph);
     DFS dfs(wikiGraph);
 
-    // define source and target
-    int source = 0; // Example: Article 0
-    int target = 3000; // Example: Article 3000
+    // create UI object
+    UI userInterface(wikiGraph, bfs, dfs);
 
-    // perform BFS traversal
-    vector<int> bfsPath = bfs.traverse(source, target);
-    cout << "BFS Path from " << source << " to " << target << ": ";
-    for(auto const &node : bfsPath){
-        cout << node << " ";
-    }
-    cout << endl;
-
-    // perform DFS traversal
-    vector<int> dfsPath = dfs.traverse(source, target);
-    cout << "DFS Path from " << source << " to " << target << ": ";
-    for(auto const &node : dfsPath){
-        cout << node << " ";
-    }
-    cout << endl;
+    // start the user interface
+    userInterface.start();
 
     return 0;
 } 
