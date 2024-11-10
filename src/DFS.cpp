@@ -1,66 +1,59 @@
 #include "DFS.h"
-#include <algorithm>
-using namespace std;
+#include <stack>
+#include <unordered_set>
+#include <chrono>
 
-// Constructor initializing DFS with the given graph
-DFS::DFS(const Graph &graph) : g(graph), visited(graph.getVertices(), false), parent(graph.getVertices(), -1) {
-    // initialize visited and parent vectors
-}
+// DFS constructor
+DFS::DFS(const Graph& graph) : graph(graph) {}
 
-// Helper recursive function for DFS
-bool DFS::dfsUtil(int current, int target, SearchMetrics &metrics) {
-    // mark the current node as visited and increment counter
-    visited[current] = true;
-    metrics.nodesVisited++;
+// function to perform DFS and return the path along with metrics
+std::pair<std::vector<std::string>, DFSMetrics> DFS::findPath(const std::string& source, const std::string& target) {
+    DFSMetrics metrics;
+    std::vector<std::string> path;
+    std::stack<std::string> s;
+    std::unordered_set<std::string> visited;
+    std::unordered_map<std::string, std::string> parent;
 
-    // if current node is the target, return true
-    if(current == target) {
-        metrics.pathFound = true;
-        return true;
-    }
+    // Start timing
+    auto start = std::chrono::high_resolution_clock::now();
 
-    // iterate through all adjacent vertices
-    for(auto const &adj : g.getAdjList()[current]) {
-        if(!visited[adj]) {
-            parent[adj] = current;
-            // recursively visit the adjacent node
-            if(dfsUtil(adj, target, metrics)){
-                return true;
+    s.push(source);
+    visited.insert(source);
+    metrics.nodes_visited++;
+
+    while (!s.empty()) {
+        std::string current = s.top();
+        s.pop();
+
+        if (current == target) {
+            break;
+        }
+
+        for (const auto& neighbor : graph.getNeighbors(current)) {
+            if (visited.find(neighbor) == visited.end()) {
+                s.push(neighbor);
+                visited.insert(neighbor);
+                parent[neighbor] = current;
+                metrics.nodes_visited++;
             }
         }
     }
-    return false;
-}
 
-// Function to perform DFS and find path from source to target
-vector<int> DFS::traverse(int source, int target, SearchMetrics &metrics) {
-    // start timing
-    auto start = chrono::high_resolution_clock::now();
-    
-    // reset visited and parent arrays
-    fill(visited.begin(), visited.end(), false);
-    fill(parent.begin(), parent.end(), -1);
-    metrics = SearchMetrics(); // reset metrics
-    
-    // perform dfs
-    dfsUtil(source, target, metrics);
-    
-    // reconstruct path if found
-    vector<int> path;
-    if(metrics.pathFound) {
-        int crawl = target;
+    // End timing
+    auto end = std::chrono::high_resolution_clock::now();
+    metrics.execution_time = std::chrono::duration<double, std::micro>(end - start).count();
+
+    // Reconstruct path
+    if (visited.find(target) != visited.end()) {
+        std::string crawl = target;
         path.push_back(crawl);
-        while(parent[crawl] != -1) {
-            path.push_back(parent[crawl]);
+        while (parent.find(crawl) != parent.end()) {
             crawl = parent[crawl];
+            path.push_back(crawl);
         }
-        reverse(path.begin(), path.end());
+        std::reverse(path.begin(), path.end());
+        metrics.path_length = path.size();
     }
-    
-    // calculate metrics
-    auto end = chrono::high_resolution_clock::now();
-    metrics.executionTime = chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0;
-    metrics.pathLength = path.size();
-    
-    return path;
+
+    return {path, metrics};
 } 
