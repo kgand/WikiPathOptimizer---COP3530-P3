@@ -103,6 +103,9 @@ We seek to determine whether BFS or DFS has a better performance when using a da
    ```
 
 ### Expected Output
+
 Article 0: 1 -> NULL
+
 Article 1: 0 -> 2 -> NULL
+
 Article 2: 1 -> NULL
