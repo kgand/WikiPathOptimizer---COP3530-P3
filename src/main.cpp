@@ -2,47 +2,54 @@
 #include "Graph.h"
 #include "BFS.h"
 #include "DFS.h"
+#include "DataLoader.h"
 using namespace std;
 
 int main() {
-    // create a graph with 5 articles
-    Graph wikiGraph(5);
+    // define number of articles (nodes)
+    int numArticles = 4604; // total articles in dataset
 
-    // add some navigation paths
-    wikiGraph.addEdge(0, 1);
-    wikiGraph.addEdge(0, 4);
-    wikiGraph.addEdge(1, 2);
-    wikiGraph.addEdge(1, 3);
-    wikiGraph.addEdge(1, 4);
-    wikiGraph.addEdge(2, 3);
-    wikiGraph.addEdge(3, 4);
+    // create a graph with the number of articles
+    Graph wikiGraph(numArticles);
 
-    // display the adjacency list
-    wikiGraph.displayGraph();
+    // create DataLoader object
+    DataLoader loader;
+
+    // path to dataset file
+    string datasetPath = "data/wikispeedia-data.txt";
+
+    // load data into graph
+    if(!loader.loadData(datasetPath, wikiGraph)){
+        cerr << "Error loading data." << endl;
+        return -1;
+    }
+
+    // display the graph (optional, can be large)
+    // wikiGraph.displayGraph();
 
     // create BFS and DFS objects
     BFS bfs(wikiGraph);
     DFS dfs(wikiGraph);
 
     // define source and target
-    int source = 0; // Article 0
-    int target = 3; // Article 3
+    int source = 0; // Example: Article 0
+    int target = 3000; // Example: Article 3000
 
     // perform BFS traversal
-    std::vector<int> bfsPath = bfs.traverse(source, target);
-    std::cout << "BFS Path from " << source << " to " << target << ": ";
+    vector<int> bfsPath = bfs.traverse(source, target);
+    cout << "BFS Path from " << source << " to " << target << ": ";
     for(auto const &node : bfsPath){
-        std::cout << node << " ";
+        cout << node << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     // perform DFS traversal
-    std::vector<int> dfsPath = dfs.traverse(source, target);
-    std::cout << "DFS Path from " << source << " to " << target << ": ";
+    vector<int> dfsPath = dfs.traverse(source, target);
+    cout << "DFS Path from " << source << " to " << target << ": ";
     for(auto const &node : dfsPath){
-        std::cout << node << " ";
+        cout << node << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     return 0;
 } 
