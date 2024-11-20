@@ -1,4 +1,4 @@
-#include "DataLoader.h"
+#include "../include/DataLoader.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -32,9 +32,12 @@ bool DataLoader::loadData(const string &filePath, Graph &graph, const ArticleMap
             int dest_vertex = mapper.getArticleIndex(dest_str);
 
             // validate indices and add edge to graph if valid
-            if(src_vertex != -1 && dest_vertex != -1) {
-                graph.addEdge(src_vertex, dest_vertex);
+            if (src_vertex != -1 && dest_vertex != -1) {
+                string src_name = mapper.getArticleName(src_vertex);
+                string dest_name = mapper.getArticleName(dest_vertex);
+                graph.addEdge(src_name, dest_name);
             }
+
         }
     }
 

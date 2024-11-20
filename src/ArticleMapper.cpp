@@ -1,4 +1,4 @@
-#include "ArticleMapper.h"
+#include "../include/ArticleMapper.h"
 #include <fstream>
 #include <iostream>
 

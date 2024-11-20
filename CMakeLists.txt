@@ -1,28 +1,33 @@
-cmake_minimum_required(VERSION 3.10)
-project(Wikipath)
+cmake_minimum_required(VERSION 3.28)
+project(CMakeSFMLProject LANGUAGES CXX)
 
-# set the c++ standard to c++11 and enforce its usage
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-# include directories for header files
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include(FetchContent)
+FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.x
+        GIT_SHALLOW ON
+        EXCLUDE_FROM_ALL
+        SYSTEM)
+FetchContent_MakeAvailable(SFML)
 
-# add executable target for the main application
-add_executable(wikipath 
-    src/main.cpp
-    src/Graph.cpp
-    src/BFS.cpp
-    src/DFS.cpp
+add_executable(main src/main.cpp
+        src/UI.cpp
+        src/Graph.cpp
+        src/DFS.cpp
+        src/DataLoader.cpp
+        src/BFS.cpp
+        src/ArticleMapper.cpp
 )
+target_link_libraries(main PRIVATE sfml-graphics)
+target_compile_features(main PRIVATE cxx_std_17)
 
-# add executable target for the graph testing program
-add_executable(test_graph
-    tests/test_graph.cpp
-    src/Graph.cpp
-    src/BFS.cpp
-    src/DFS.cpp
-)
-
-# copy data files to the build directory to ensure they're available during execution
-file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
+if(WIN32)
+    add_custom_command(
+            TARGET main
+            COMMENT "Copy OpenAL DLL"
+            PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:main>
+            VERBATIM)
+endif()

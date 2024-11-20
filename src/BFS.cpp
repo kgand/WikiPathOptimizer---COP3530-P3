@@ -1,4 +1,4 @@
-#include "BFS.h"
+#include "../include/BFS.h"
 #include <queue>
 #include <unordered_set>
 #include <chrono>
