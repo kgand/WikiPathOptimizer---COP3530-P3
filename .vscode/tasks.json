@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build test.cpp",
+            "type": "shell",
+            "command": "cl",
+            "args": [
+                "/EHsc",
+                "/I", "C:/Users/kjchi/vcpkg/installed/x64-windows/include",
+                "C:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/test.cpp",
+                "/link",
+                "/LIBPATH:C:/Users/kjchi/vcpkg/installed/x64-windows/lib",
+                "restbed.lib",
+                "/out:C:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/test.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$msCompile"]
+        }
+    ]
+}

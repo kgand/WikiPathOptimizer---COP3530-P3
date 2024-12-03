@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\kjchi\OneDrive\Desktop\PracticeWebsite\wikipath-back-end\src\ArticleMapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kjchi\OneDrive\Desktop\PracticeWebsite\wikipath-back-end\src\BFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kjchi\OneDrive\Desktop\PracticeWebsite\wikipath-back-end\src\DFS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kjchi\OneDrive\Desktop\PracticeWebsite\wikipath-back-end\src\Graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\kjchi\OneDrive\Desktop\PracticeWebsite\wikipath-back-end\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{FA65743B-EE0D-331A-A72C-FAEC733A7ABC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
