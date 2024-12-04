@@ -23,6 +23,9 @@ public:
     // adds a directed edge between two articles in the graph
     void addEdge(const string& source, const string& target);
 
+    // returns vector of all topics in dataset
+    vector<string> getAllTopics() const;
+
 private:
     // loads article names and assigns unique IDs from the articles file
     void loadArticles(const string& articlesFile);

@@ -132,3 +132,11 @@ void Graph::loadShortestPathMatrix(const string& matrixFile) {
     }
     infile.close();
 }
+
+vector<string> Graph::getAllTopics() const {
+    vector<string> topics;
+    for (const auto& [id, name] : id_to_name) {
+        topics.push_back(name);
+    }
+    return topics;
+}

@@ -102,6 +102,27 @@ void dfs_handler(const shared_ptr<Session> session) {
     });
 }
 
+// fetch all topics from graph 
+void topics_handler(const shared_ptr<Session> session) {
+    vector<string> topics = graph.getAllTopics();
+
+    stringstream response;
+    response << "[";
+    for (size_t i = 0; i < topics.size(); ++i) {
+        response << "\"" << topics[i] << "\"";
+        if (i != topics.size() - 1) {
+            response << ",";
+        }
+    }
+    response << "]";
+
+    session->close(OK, response.str(), {
+        {"Content-Length", to_string(response.str().size())},
+        {"Content-Type", "application/json"},
+        {"Access-Control-Allow-Origin", "*"}
+    });
+}
+
 void options_handler(const shared_ptr<Session> session) {
     session->close(OK, "", {
         {"Access-Control-Allow-Origin", "*"},
@@ -121,6 +142,11 @@ int main() {
     dfs_resource->set_method_handler("GET", dfs_handler);
     dfs_resource->set_method_handler("OPTIONS", options_handler);
 
+    auto topics_resource = make_shared<Resource>();
+    topics_resource->set_path("/topics");
+    topics_resource->set_method_handler("GET", topics_handler);
+    topics_resource->set_method_handler("OPTIONS", options_handler);
+
     // restbed settings
     auto settings = make_shared<Settings>();
     settings->set_port(8070);
@@ -128,6 +154,7 @@ int main() {
     Service service;
     service.publish(bfs_resource);
     service.publish(dfs_resource);
+    service.publish(topics_resource);
     service.start(settings);
 
     return 0;
