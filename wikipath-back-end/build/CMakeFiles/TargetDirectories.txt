@@ -1,0 +1,3 @@
+C:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/build/CMakeFiles/WikiPathBackend.dir
+C:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/build/CMakeFiles/ZERO_CHECK.dir

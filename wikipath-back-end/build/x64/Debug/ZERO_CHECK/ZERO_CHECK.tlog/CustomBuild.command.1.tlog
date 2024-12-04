@@ -1,0 +1,10 @@
+^C:\USERS\KJCHI\ONEDRIVE\DESKTOP\PRACTICEWEBSITE\WIKIPATH-BACK-END\BUILD\CMAKEFILES\E4CA9D1444B0973A9890041E40D3E660\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end -BC:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/kjchi/OneDrive/Desktop/PracticeWebsite/wikipath-back-end/build/WikiPathBackend.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

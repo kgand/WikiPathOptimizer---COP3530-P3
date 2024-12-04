@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\kjchi\OneDrive\Desktop\PracticeWebsite\wikipath-back-end\build\CMakeFiles\e4ca9d1444b0973a9890041e40d3e660\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B9F243B8-2DE5-3991-9CCC-1C065A71B26E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
