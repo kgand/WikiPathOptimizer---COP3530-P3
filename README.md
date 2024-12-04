@@ -8,6 +8,55 @@
 ## Project Overview
 WikiPath is a full-stack application that finds and compares efficient navigation paths between Wikipedia articles using different pathfinding algorithms (BFS and DFS). The project analyzes algorithm performance on a large dataset of Wikipedia articles and their connections.
 
+## Getting Started
+
+### Prerequisites
+- **Node.js** (version 16 or higher)
+- **C++ compiler** with C++11 support
+- **CMake** (version 3.10 or higher)
+- **Git**
+
+### Running WikiPath
+
+1. **Clone the frontend repository:**
+    ```bash
+    git clone https://github.com/kgand/WikiPathOptimizer---COP3530-P3.git
+    ```
+
+#### Frontend Setup
+1. Open a terminal
+2. Navigate to the frontend directory:   ```bash
+   cd wikipath-front-end   ```
+3. Install dependencies:   ```bash
+   npm install   ```
+4. Start the frontend:   ```bash
+   npm start   ```
+
+#### Backend Setup
+1. Install the Restbed API using VCPKG:   ```bash
+   git clone https://github.com/microsoft/vcpkg.git
+   cd vcpkg
+   .\bootstrap-vcpkg.bat   # For Windows
+   ./bootstrap-vcpkg.sh    # For Linux/MAC OS
+   .\vcpkg integrate install   # Windows only
+   .\vcpkg install restbed   ```
+   > **Note:** After installation, ensure the Restbed header file in vcpkg/installed/x64-windows/include is named `restbed.h`
+
+2. Open x64 Native Tools Command Prompt for VS 2022
+
+3. Navigate to the backend directory:   ```bash
+   cd wikipath-back-end   ```
+
+4. Compile the backend (adjust paths accordingly):   ```bash
+   cl /std:c++17 /EHsc /I C:<path-to-vcpkg-installed-include> /I include test.cpp src/Graph.cpp src/BFS.cpp src/DFS.cpp /link /LIBPATH:C:<path-to-vcpkg-installed-lib> restbed-shared.lib /out:test.exe /MACHINE:X64   ```
+
+5. Run the backend:   ```bash
+   test.exe   ```
+
+6. Test the API:
+   Open a browser and navigate to:   ```
+   http://localhost:8070/bfs?source=Dog&target=Shang%20Dynasty   ```
+
 ## Features
 - **Find shortest paths** between any two Wikipedia articles
 - **Compare BFS and DFS algorithm performance**
@@ -76,81 +125,7 @@ WikiPath is a full-stack application that finds and compares efficient navigatio
   - `links.tsv`: Article connections
   - `shortest-path-distance-matrix.txt`: Pre-computed distances
 
-## Getting Started
 
-### Prerequisites
-- **Node.js** (version 16 or higher)
-- **C++ compiler** with C++11 support
-- **CMake** (version 3.10 or higher)
-- **Git**
-
-### Installation
-
-#### Backend Setup
-1. **Clone the backend repository:**
-    ```bash
-    git clone https://github.com/kgand/wikipath-back-end.git
-    cd wikipath-back-end
-    ```
-2. **Install dependencies:**
-    ```bash
-    npm install
-    ```
-3. **Build C++ components:**
-    ```bash
-    npm run build
-    ```
-
-#### Frontend Setup
-1. **Clone the frontend repository:**
-    ```bash
-    git clone https://github.com/kgand/wikipath-front-end.git
-    cd wikipath-front-end
-    ```
-2. **Install dependencies:**
-    ```bash
-    npm install
-    ```
-
-### Running WikiPath
-
-#### Development Mode
-1. **Start the backend server:**
-    ```bash
-    cd wikipath-back-end
-    npm run dev
-    ```
-2. **Start the frontend development server:**
-    ```bash
-    cd wikipath-front-end
-    npm run dev
-    ```
-
-#### Production Mode
-1. **Build and start the backend:**
-    ```bash
-    cd wikipath-back-end
-    npm run build
-    npm start
-    ```
-2. **Build and serve the frontend:**
-    ```bash
-    cd wikipath-front-end
-    npm run build
-    npm run serve
-    ```
-
-### Testing
-- **Backend Tests:**
-    ```bash
-    cd wikipath-back-end
-    npm test
-    ```
-- **Frontend Tests:**
-    ```bash
-    cd wikipath-front-end
-    npm test
-    ```
 
 ## Implementation Details
 
