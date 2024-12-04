@@ -6,7 +6,7 @@
 - Kovidh Gandreti
 
 ## Project Overview
-WikiPath is a C++ application that finds and compares efficient navigation paths between Wikipedia articles using different pathfinding algorithms (BFS and DFS). The project analyzes algorithm performance on a large dataset of Wikipedia articles and their connections.
+WikiPath is a full-stack application that finds and compares efficient navigation paths between Wikipedia articles using different pathfinding algorithms (BFS and DFS). The project analyzes algorithm performance on a large dataset of Wikipedia articles and their connections.
 
 ## Features
 - **Find shortest paths** between any two Wikipedia articles
@@ -16,16 +16,32 @@ WikiPath is a C++ application that finds and compares efficient navigation paths
   - Number of nodes visited
   - Execution time
   - Success rate
-- **User-friendly command-line interface**
+- **Modern web interface**
 - **Article name mapping and validation**
 - **Support for large datasets**
 
 ## Technical Architecture
 
-### Data Structure
-- **Graph representation using adjacency lists**
-- **Article mapping system for efficient lookups**
-- **Pre-computed shortest path matrix support**
+### Backend (wikipath-back-end)
+- **C++ Core Engine**
+  - Graph processing
+  - Pathfinding algorithms
+  - Performance metrics collection
+- **REST API Server**
+  - Express.js wrapper for C++ core
+  - RESTful endpoints for path finding
+  - Performance data endpoints
+
+### Frontend (wikipath-front-end)
+- **React Application**
+  - Modern UI/UX design
+  - Real-time path visualization
+  - Interactive article selection
+  - Performance metrics display
+- **TypeScript Implementation**
+  - Type-safe development
+  - Component-based architecture
+  - State management
 
 ### Core Components
 1. **Graph Implementation**
@@ -38,15 +54,16 @@ WikiPath is a C++ application that finds and compares efficient navigation paths
    - Depth-First Search (DFS)
    - Performance metrics tracking
 
-3. **Data Management**
-   - ArticleMapper for efficient article lookup
-   - DataLoader for parsing TSV files
-   - Support for URL-encoded article names
+3. **API Layer**
+   - RESTful endpoints
+   - JSON response formatting
+   - Error handling middleware
 
-4. **User Interface**
-   - Interactive command-line interface
+4. **Frontend Components**
+   - Article search interface
    - Path visualization
-   - Performance metrics display
+   - Performance comparison charts
+   - Error handling and validation
 
 ## Dataset
 - **Source:** Wikispeedia Navigation Paths
@@ -62,84 +79,78 @@ WikiPath is a C++ application that finds and compares efficient navigation paths
 ## Getting Started
 
 ### Prerequisites
+- **Node.js** (version 16 or higher)
 - **C++ compiler** with C++11 support
 - **CMake** (version 3.10 or higher)
-- **Make** (Unix) or **PowerShell** (Windows)
 - **Git**
 
 ### Installation
 
-#### Option 1: Using CMake (Unix/Linux/MacOS)
-1. **Clone the repository:**
+#### Backend Setup
+1. **Clone the backend repository:**
     ```bash
-    git clone https://github.com/kgand/WikiPath.git
-    cd WikiPath
+    git clone https://github.com/kgand/wikipath-back-end.git
+    cd wikipath-back-end
     ```
-2. **Create and enter build directory:**
+2. **Install dependencies:**
     ```bash
-    mkdir build && cd build
+    npm install
     ```
-3. **Configure and build with CMake:**
+3. **Build C++ components:**
     ```bash
-    cmake ..
-    make
+    npm run build
     ```
 
-#### Option 2: Using PowerShell (Windows)
-1. **Open PowerShell** in the project directory.
-2. **Run the build script:**
-    ```powershell
-    .\build.ps1
+#### Frontend Setup
+1. **Clone the frontend repository:**
+    ```bash
+    git clone https://github.com/kgand/wikipath-front-end.git
+    cd wikipath-front-end
+    ```
+2. **Install dependencies:**
+    ```bash
+    npm install
     ```
 
 ### Running WikiPath
 
-#### Basic Usage
-After building the project, you can run the application as follows:
+#### Development Mode
+1. **Start the backend server:**
+    ```bash
+    cd wikipath-back-end
+    npm run dev
+    ```
+2. **Start the frontend development server:**
+    ```bash
+    cd wikipath-front-end
+    npm run dev
+    ```
 
-```bash
-./wikipath
-```
+#### Production Mode
+1. **Build and start the backend:**
+    ```bash
+    cd wikipath-back-end
+    npm run build
+    npm start
+    ```
+2. **Build and serve the frontend:**
+    ```bash
+    cd wikipath-front-end
+    npm run build
+    npm run serve
+    ```
 
-
-### Running Tests
-After building, run the test suite to verify the implementation:
-```bash
-./test_graph
-```
-
-### Build Scripts
-
-#### CMake
-The project uses CMake for building on Unix/Linux/MacOS systems. The `CMakeLists.txt` is configured to include necessary directories and compile the executable targets.
-
-#### PowerShell Script (Windows)
-For Windows users, a PowerShell script `build.ps1` is provided to automate the build process.
-
-```powershell
-# Create build directory if it doesn't exist
-if (!(Test-Path build)) {
-    New-Item -ItemType Directory -Path build
-}
-
-# Get the current directory (project root)
-$projectRoot = Get-Location
-
-# Copy data files to build directory
-Copy-Item -Path "$projectRoot\data" -Destination "$projectRoot\build" -Recurse -Force
-
-# Change to build directory
-Set-Location "$projectRoot\build"
-
-# Compile main program using absolute paths
-g++ "$projectRoot\src\main.cpp" "$projectRoot\src\Graph.cpp" "$projectRoot\src\BFS.cpp" "$projectRoot\src\DFS.cpp" -I"$projectRoot\include" -o wikipath
-
-# Compile test program using absolute paths
-g++ "$projectRoot\tests\test_graph.cpp" "$projectRoot\src\Graph.cpp" "$projectRoot\src\BFS.cpp" "$projectRoot\src\DFS.cpp" -I"$projectRoot\include" -o test_graph
-
-# Return to original directory
-Set-Location $projectRoot
-```
+### Testing
+- **Backend Tests:**
+    ```bash
+    cd wikipath-back-end
+    npm test
+    ```
+- **Frontend Tests:**
+    ```bash
+    cd wikipath-front-end
+    npm test
+    ```
 
 ## Implementation Details
 
@@ -179,12 +190,12 @@ Set-Location $projectRoot
 - **Multi-threading Support:** Enhance performance by parallelizing graph traversal for large datasets
 
 ## Contributing
-1. Fork the repository
+1. Fork the respective repository (frontend or backend)
 2. Create a feature branch
 3. Commit your changes
 4. Push to the branch
-5. Create a Pull Request
-
+5. Create a Pull Request following our code review guidelines
 
 ## Acknowledgments
 - **Wikispeedia Dataset Providers:** For supplying the navigation paths data
+- **Open Source Community:** For the various libraries and tools used in this project
