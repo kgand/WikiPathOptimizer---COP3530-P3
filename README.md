@@ -18,7 +18,7 @@ WikiPath is a full-stack application that finds and compares efficient navigatio
 
 ### Running WikiPath
 
-1. **Clone the frontend repository:**
+1. **Clone the repository:**
     ```bash
     git clone https://github.com/kgand/WikiPathOptimizer---COP3530-P3.git
     ```
