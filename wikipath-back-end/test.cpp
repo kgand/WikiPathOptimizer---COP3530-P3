@@ -40,6 +40,7 @@ string createSuccessResponse(const vector<string>& path, int executionTime, int 
     return response.str();
 }
 
+// handles getting bfs request and sending response
 void bfs_handler(const shared_ptr<Session> session) {
     const auto request = session->get_request();
     string source = request->get_query_parameter("source", "");
@@ -71,6 +72,7 @@ void bfs_handler(const shared_ptr<Session> session) {
     });
 }
 
+// handles getting dfs request and sending response
 void dfs_handler(const shared_ptr<Session> session) {
     const auto request = session->get_request();
     string source = request->get_query_parameter("source", "");
