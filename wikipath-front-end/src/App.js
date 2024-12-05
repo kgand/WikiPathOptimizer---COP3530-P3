@@ -7,7 +7,7 @@ function App() {
   const [filteredTopicsEnd, setFilteredTopicsEnd] = useState([]);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [algorithm, setAlgorithm] = useState("quickest"); // Default to "Quickest Algorithm"
+  const [algorithm, setAlgorithm] = useState("quickest"); 
   const [result, setResult] = useState(null);
   const [quickestResult, setQuickestResult] = useState(null);
   const [shortestResult, setShortestResult] = useState(null);
@@ -15,10 +15,11 @@ function App() {
   const [showDropdownEnd, setShowDropdownEnd] = useState(false);
   const [error, setError] = useState("");
 
+  // get response from backend
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const response = await axios.get("http://localhost:8070/topics");
+        const response = await axios.get(`http://localhost:8070/topics`);
         setTopics(response.data || []);
       } catch (error) {
         console.error("Error fetching topics:", error);
@@ -28,6 +29,7 @@ function App() {
     fetchTopics();
   }, []);
 
+  // handles the source input box
   const handleStartChange = (e) => {
     const value = e.target.value;
     setStart(value);
@@ -37,6 +39,7 @@ function App() {
     );
   };
 
+  // handles the target input box
   const handleEndChange = (e) => {
     const value = e.target.value;
     setEnd(value);
@@ -46,27 +49,27 @@ function App() {
     );
   };
 
+  // handles the dropdown to select type of traversal/algorithm
   const handleAlgorithmChange = (e) => {
     setAlgorithm(e.target.value);
-    setResult(null); // Clear results when switching algorithms
+    setResult(null); 
     setQuickestResult(null);
     setShortestResult(null);
-    setError(""); // Clear error
+    setError(""); 
   };
 
+  // gets the quickest algorithm
   const handleQuickestAlgorithm = async () => {
+    // error if no inputs
     if (!start || !end) {
       setError("Inputs Required!");
       return;
     }
     setError("");
     try {
-      const bfsResponse = await axios.get(
-        `http://localhost:8070/bfs?source=${start}&target=${end}`
-      );
-      const dfsResponse = await axios.get(
-        `http://localhost:8070/dfs?source=${start}&target=${end}`
-      );
+      // gets both bfs and dfs metrics and then compares
+      const bfsResponse = await axios.get(`http://localhost:8070/bfs?source=${start}&target=${end}`);
+      const dfsResponse = await axios.get(`http://localhost:8070/dfs?source=${start}&target=${end}`);
 
       if (bfsResponse.data.metrics.execution_time < dfsResponse.data.metrics.execution_time) {
         setQuickestResult({
@@ -91,19 +94,18 @@ function App() {
     }
   };
 
+  // gets the shortest path
   const handleShortestAlgorithm = async () => {
+    // error if no inputs
     if (!start || !end) {
       setError("Inputs Required!");
       return;
     }
     setError("");
     try {
-      const bfsResponse = await axios.get(
-        `http://localhost:8070/bfs?source=${start}&target=${end}`
-      );
-      const dfsResponse = await axios.get(
-        `http://localhost:8070/dfs?source=${start}&target=${end}`
-      );
+      // gets both bfs and dfs metrics and then compares
+      const bfsResponse = await axios.get(`http://localhost:8070/bfs?source=${start}&target=${end}`);
+      const dfsResponse = await axios.get(`http://localhost:8070/dfs?source=${start}&target=${end}`);
 
       if (bfsResponse.data.metrics.path_length < dfsResponse.data.metrics.path_length) {
         setShortestResult({
@@ -128,19 +130,18 @@ function App() {
     }
   };
 
+  // gets bfs/dfs traversal based on user seleection
   const handleTraversalAlgorithm = async () => {
+    // error if no inputs
     if (!start || !end) {
       setError("Inputs Required!");
       return;
     }
     setError("");
     try {
-      const bfsResponse = await axios.get(
-        `http://localhost:8070/bfs?source=${start}&target=${end}`
-      );
-      const dfsResponse = await axios.get(
-        `http://localhost:8070/dfs?source=${start}&target=${end}`
-      );
+      // gets both dfs and bfs traversal and sees which was desired
+      const bfsResponse = await axios.get(`http://localhost:8070/bfs?source=${start}&target=${end}`);
+      const dfsResponse = await axios.get(`http://localhost:8070/dfs?source=${start}&target=${end}`);
 
       if (algorithm === "bfs") {
         setResult(bfsResponse.data);
@@ -148,11 +149,12 @@ function App() {
         setResult(dfsResponse.data);
       }
     } catch (error) {
-      console.error("Error fetching traversal algorithm data:", error);
-      setResult({ error: "Failed to fetch traversal algorithm. Please try again." });
+      console.error("Couldn't fetch traversal algorithm:", error);
+      setResult({ error: "Failed to fetch traversal algorithm" });
     }
   };
 
+  // goes to the associated function based on what user inputs
   const handleSearch = () => {
     if (algorithm === "quickest") {
       handleQuickestAlgorithm();
@@ -171,9 +173,10 @@ function App() {
         Select two topics from the dropdowns to see how they are connected through Wikipedia!
       </p>
 
-      {/* Topic Inputs */}
+      {/* user input for topics */}
       <div style={{ marginBottom: "20px" }}>
         <div style={{ position: "relative", display: "inline-block", marginRight: "30px" }}>
+          {/* input box for the start topic*/}
           <input
             type="text"
             placeholder="Start Topic"
@@ -188,6 +191,7 @@ function App() {
               fontSize: "15px"
             }}
           />
+          {/* dropdown of all topics*/}
           {showDropdownStart && filteredTopicsStart.length > 0 && (
             <div
               style={{
@@ -202,6 +206,7 @@ function App() {
                 fontSize: "15px"
               }}
             >
+              {/* shows topics beginning with same characters as user input */}
               {filteredTopicsStart.map((topic) => (
                 <div
                   key={topic}
@@ -221,7 +226,8 @@ function App() {
             </div>
           )}
         </div>
-
+          
+        {/* input box for the start topic*/}
         <div style={{ position: "relative", display: "inline-block" }}>
           <input
             type="text"
@@ -237,6 +243,8 @@ function App() {
               fontSize: "15px"
             }}
           />
+         
+          {/* dropdown of all topics*/}
           {showDropdownEnd && filteredTopicsEnd.length > 0 && (
             <div
               style={{
@@ -250,6 +258,7 @@ function App() {
                 overflowY: "auto",
               }}
             >
+              {/* shows topics beginning with same characters as user input */}
               {filteredTopicsEnd.map((topic) => (
                 <div
                   key={topic}
@@ -271,12 +280,12 @@ function App() {
         </div>
       </div>
 
-      {/* Error Message */}
+      {/* error handling */}
       {error && (
         <p style={{ color: "white", fontWeight: "bold", marginTop: "30px", fontSize: "20px" }}>{error}</p>
       )}
 
-      {/* Algorithm Selection */}
+      {/* selecting algorithm */}
       <div style={{ marginTop: "10px" }}>
         <select
           value={algorithm}
@@ -312,6 +321,7 @@ function App() {
         </button>
       </div>
 
+      {/* bfs or dfs */}
       {result && algorithm !== "quickest" && algorithm !== "shortest" && (
         <div style={{ marginTop: "20px", textAlign: "center", color: "white" }}>
           <h3 style={{ fontSize: "30px" }}>Result:</h3>
@@ -338,6 +348,7 @@ function App() {
                 maxWidth: "90vw",
               }}
             >
+              {/* makes each bubble a link */}
               {result.path?.map((word, index) => (
                 <React.Fragment key={index}>
                   <a
@@ -386,7 +397,7 @@ function App() {
       )}
 
 
-      {/* Shortest Path Result */}
+      {/* shortest path */}
       {shortestResult && algorithm === "shortest" && (
         <div style={{ marginTop: "20px", textAlign: "center", color: "white" }}>
           <h3 style={{ fontSize: "30px" }}>Shortest Path Result:</h3>
@@ -413,6 +424,7 @@ function App() {
                 maxWidth: "90vw",
               }}
             >
+              {/* makes each bubble a link */}
               {shortestResult.path?.map((word, index) => (
                 <React.Fragment key={index}>
                   <a
@@ -461,7 +473,7 @@ function App() {
       )}
 
 
-      {/* Quickest Path Result */}
+      {/* quickest path */}
       {quickestResult && algorithm === "quickest" && (
         <div style={{ marginTop: "20px", textAlign: "center", color: "white" }}>
           <h3 style={{ fontSize: "30px" }}>Quickest Algorithm Result:</h3>
@@ -488,6 +500,7 @@ function App() {
                 maxWidth: "90vw",
               }}
             >
+              {/* makes each bubble a link */}
               {quickestResult.path?.map((word, index) => (
                 <React.Fragment key={index}>
                   <a
